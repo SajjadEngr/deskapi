@@ -15,7 +15,7 @@ const userSchema = new Schema<IUser>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     tag: { type: String, required: false },
-    activeStatus: { type: Boolean, required: true, default: true },
+    activeStatus: { type: Boolean, required: true, default: false },
     resetPasswordCode: String,
   },
   { timestamps: true }

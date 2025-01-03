@@ -4,6 +4,8 @@ import morgan from "morgan";
 import { configDotenv } from "dotenv";
 import root from "./routers/root.router";
 import mongoose from "mongoose";
+import auth from "./routers/auth.router";
+
 //* Create application
 const app: Application = express();
 
@@ -15,6 +17,7 @@ configDotenv();
 
 //* Add routers
 app.use("/", root);
+app.use("/auth", auth);
 
 //? Listening application
 const run = async (port: string | number = process.env.PORT || 3000) => {
