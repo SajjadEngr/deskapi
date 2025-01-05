@@ -33,10 +33,7 @@ export const register = async (req: Request, res: Response) => {
     await newUser.save();
 
     // Generate JWT for the user
-    const token = jwt.sign(
-      { id: newUser.id, email: newUser.email },
-      process.env.SECRET_KEY || "my-secret"
-    );
+    const token = generateToken(newUser._id, email);
 
     // Create activation token
     const activationToken = jwt.sign(
@@ -162,10 +159,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Generate JWT for the logged-in user
-    const token = jwt.sign(
-      { id: user._id, email },
-      process.env.SECRET_KEY || "my-secret"
-    );
+    const token = generateToken(user._id, email);
 
     res.status(200).json({
       message: "Login successful",
@@ -175,5 +169,19 @@ export const login = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error("Error during login:", error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const generateToken = (userId: any, email: string) => {
+  try {
+    const token = jwt.sign(
+      { id: userId, email },
+      process.env.SECRET_KEY || "my-secret"
+    );
+    return token;
+  } catch (error: any) {
+    console.log(error.message);
+
+    throw new Error("Internal server error");
   }
 };
